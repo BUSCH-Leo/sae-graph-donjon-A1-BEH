@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <windows.h>
 #include "affichage/AfficheDonjon.cpp"
 
 using namespace std;
