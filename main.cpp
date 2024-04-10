@@ -5,6 +5,8 @@
 using namespace std;
 
 int main() {
+
+   SetConsoleOutputCP(CP_UTF8); // pour éviter d'avoir mauvais charactère
    
     // On demande à l'utilisateur la taille du labyrinthe
     int taille=0;
