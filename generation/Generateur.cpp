@@ -65,19 +65,28 @@ int LabyrinthePlusQueParfait(vector<vector<bool>>& matrice_adjacence, int taille
     return cellule2;
 }
 
-/*
-function create Maze()
-    startVertex Vertex(0, 0)
-    randomizedDFS(start Vertex)
-end
-    function randomizedDFS(vertex)
-    mark Visited(vertex)
-    nextVertex <- randomUnvisited Neighbour(vertex)
-    while nextVertex != null do
-    connectCells(vertex, nextVertex);
-    randomizedDFS(nextVertex)
-    nextVertex <- randomUnvisited Neighbour(vertex)
-    end
-    return
-end
-*/
+int LabyrintheImparfait(vector<vector<bool>>& matrice_adjacence, int taille, int entreX, int entreY, float nbtrou) {
+    nbtrou = (taille * taille) * (nbtrou / 100);
+    int cellule = (entreX + entreY * taille);
+    vector<bool>visite(taille * taille, false);
+    randomprofondeur(matrice_adjacence, visite, cellule, taille);
+    int voisin;
+    int numrand;
+    vector<bool>visitevide(taille * taille, false);
+    int y = 0;
+    for (int i = 0; i < nbtrou; i++) {
+        numrand = rand() % (taille*taille);
+        voisin = voisinrandom(matrice_adjacence, visitevide, numrand, taille);
+        if (matrice_adjacence[numrand][voisin] == true) {
+            i--;
+            y++;
+            if (y >= 1000) { break; }
+        }
+        else {
+            matrice_adjacence[numrand][voisin] = true;
+            matrice_adjacence[voisin][numrand] = true;
+            y = 0;
+        }
+    }
+    return cellule;
+}
