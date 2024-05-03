@@ -2,7 +2,7 @@
 #include <vector>
 #include <windows.h>
 #include "affichage/AfficheDonjon.cpp"
-#include "generation/LabyrintheParfait.cpp"
+#include "generation/generateur.cpp"
 #include <time.h>
 
 using namespace std;
