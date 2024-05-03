@@ -54,6 +54,17 @@ int LabyrintheParfait(vector<vector<bool>>& matrice_adjacence, int taille, int e
     randomprofondeur(matrice_adjacence, visite, cellule, taille);
     return cellule;
 }
+
+int LabyrinthePlusQueParfait(vector<vector<bool>>& matrice_adjacence, int taille, int entreX, int entreY) {
+    int cellule1 = (entreX + entreY * taille);
+    vector<bool>visite1(taille * taille, false);
+    randomprofondeur(matrice_adjacence, visite1, cellule1, taille);
+    int cellule2 = (entreX + entreY * taille);
+    vector<bool>visite2(taille * taille, false);
+    randomprofondeur(matrice_adjacence, visite2, cellule2, taille);
+    return cellule2;
+}
+
 /*
 function create Maze()
     startVertex Vertex(0, 0)
