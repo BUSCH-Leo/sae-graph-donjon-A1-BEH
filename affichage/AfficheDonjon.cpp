@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void AfficheDonjon(const vector<vector<bool>>& matrice_adjacence, int taille) {
+void AfficheDonjon(const vector<vector<bool>>& matrice_adjacence, int taille, int sortieX, int sortieY) {
     
     // Première ligne
     cout<<"  ";
@@ -16,7 +16,9 @@ void AfficheDonjon(const vector<vector<bool>>& matrice_adjacence, int taille) {
     for (int i=0; i<taille; ++i) {
         cout<<"  ██";
         for (int j=0; j<taille; ++j) {
-            cout<<"░░";
+            if ((i==0 && j==0) || (i==sortieX && j==sortieY)) cout << "\033[100m[]\033[0m";
+            else cout << "░░";
+
             if (j != taille-1) {
                 if (matrice_adjacence[i * taille + j][i * taille + j + 1]) // Vérifie le noeud suivant
                     cout<<"  "; // Pas de mur
