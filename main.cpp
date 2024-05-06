@@ -14,10 +14,12 @@ using namespace std;
 int main() {
 
     SetConsoleOutputCP(CP_UTF8); // pour éviter d'avoir mauvais charactère
-    
+
     srand(time(NULL));
 
+    /*
     FauxChargement(50);
+    */
     system("Clear");
 
     cout<<"\n     █████████   ███████████   █████ █████\n    ███░░░░░███ ░░███░░░░░███ ░░███ ░░███ \n   ░███    ░███  ░███    ░███  ░░███ ███  \n   ░███████████  ░██████████    ░░█████   \n   ░███░░░░░███  ░███░░░░░███    ███░███  \n   ░███    ░███  ░███    ░███   ███ ░░███ \n   █████   █████ █████   █████ █████ █████\n  ░░░░░   ░░░░░ ░░░░░   ░░░░░ ░░░░░ ░░░░░ \n"<<endl;
@@ -25,30 +27,31 @@ int main() {
     int entreX=0;
     int entreY=0;
 
-
     // On demande à l'utilisateur la taille du labyrinthe
     int taille = 0;
-    while (taille <= 0 || taille > 50) {
+    while (taille <= 0 || taille > 160) {
         cout << "Entrez la taille du labyrinthe : ";
         cin >> taille;
-        if (taille <= 0 || taille > 50) {
-            cout << "[!] Veuillez rentrer une valeur entre 1 et 50." << endl;
+        if (taille <= 0 || taille > 160) {
+            cout << "[!] Veuillez rentrer une valeur entre 1 et 160." << endl;
         }
     }
 
-    // Création d'une matrice d'adjacence de n*n taille (pour lier pouvoir lier tout les sommets)   
-    vector<vector<bool>> matrice_adjacence(taille * taille, vector<bool>(taille * taille, false));
-    int sortie = LabyrintheImparfait(matrice_adjacence, taille, entreX, entreY,75);
-
-    AfficheDonjon(matrice_adjacence, taille);
-
-    cout<<endl;
-
-    vector<pair<int, int>> cheminParcouru = Dijkstra(matrice_adjacence, taille, 0, 0, taille-1, taille-1);
-
-    cout<<endl;
-
-    AfficheDijkstra(matrice_adjacence, taille, cheminParcouru);
+    vector<vector<bool>> matrice_adjacenceParfaite(taille * taille, vector<bool>(taille * taille, false));
+    vector<vector<bool>> matrice_adjacencePlusqueparfaite(taille * taille, vector<bool>(taille * taille, false));
+    vector<vector<bool>> matrice_adjacenceImparfaite(taille * taille, vector<bool>(taille * taille, false));
+    int sortieParfaite = LabyrintheParfait(matrice_adjacenceParfaite, taille, entreX, entreY);
+    AfficheDonjon(matrice_adjacenceParfaite, taille);
+    vector<pair<int, int>> cheminParfait = Dijkstra(matrice_adjacenceParfaite, taille, 0, 0, taille - 1, taille - 1);
+    AfficheDijkstra(matrice_adjacenceParfaite, taille, cheminParfait);
+    int sortiePlusqueparfaite = LabyrinthePlusQueParfait(matrice_adjacencePlusqueparfaite, taille, entreX, entreY);
+    AfficheDonjon(matrice_adjacencePlusqueparfaite, taille);
+    vector<pair<int, int>> cheminPlusqueparfait = Dijkstra(matrice_adjacencePlusqueparfaite, taille, 0, 0, taille - 1, taille - 1);
+    AfficheDijkstra(matrice_adjacencePlusqueparfaite, taille, cheminPlusqueparfait);
+    int sortieImparfaite = LabyrintheImparfait(matrice_adjacenceImparfaite, taille, entreX, entreY, 5);
+    AfficheDonjon(matrice_adjacenceImparfaite, taille);
+    vector<pair<int, int>> cheminImparfait = Dijkstra(matrice_adjacenceImparfaite, taille, 0, 0, taille - 1, taille - 1);
+    AfficheDijkstra(matrice_adjacenceImparfaite, taille, cheminImparfait);
 
     return 0;
 }
