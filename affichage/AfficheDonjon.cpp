@@ -16,7 +16,7 @@ void AfficheDonjon(const vector<vector<bool>>& matrice_adjacence, int taille) {
     for (int i=0; i<taille; ++i) {
         cout<<"  ██";
         for (int j=0; j<taille; ++j) {
-            cout<<"  ";
+            cout<<"░░";
             if (j != taille-1) {
                 if (matrice_adjacence[i * taille + j][i * taille + j + 1]) // Vérifie le noeud suivant
                     cout<<"  "; // Pas de mur
