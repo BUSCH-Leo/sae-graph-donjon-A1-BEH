@@ -46,18 +46,17 @@ int main() {
     vector<vector<bool>> matrice_adjacencePlusqueparfaite(taille * taille, vector<bool>(taille * taille, false));
     vector<vector<bool>> matrice_adjacenceImparfaite(taille * taille, vector<bool>(taille * taille, false));
     int sortieParfaite = LabyrintheParfait(matrice_adjacenceParfaite, taille, entreX, entreY);
-    AfficheDonjon(matrice_adjacenceParfaite, taille);
+    AfficheDonjon(matrice_adjacenceParfaite, taille, sortix, sorty);
     vector<pair<int, int>> cheminParfait = Dijkstra(matrice_adjacenceParfaite, taille, 0, 0, sortix, sorty);
-    AfficheDijkstra(matrice_adjacenceParfaite, taille, cheminParfait);
+    AfficheDijkstra(matrice_adjacenceParfaite, taille, cheminParfait, sortix, sorty);
     int sortiePlusqueparfaite = LabyrinthePlusQueParfait(matrice_adjacencePlusqueparfaite, taille, entreX, entreY);
-    AfficheDonjon(matrice_adjacencePlusqueparfaite, taille);
+    AfficheDonjon(matrice_adjacencePlusqueparfaite, taille, sortix, sorty);
     vector<pair<int, int>> cheminPlusqueparfait = Dijkstra(matrice_adjacencePlusqueparfaite, taille, 0, 0, sortix, sorty);
-    AfficheDijkstra(matrice_adjacencePlusqueparfaite, taille, cheminPlusqueparfait);
+    AfficheDijkstra(matrice_adjacencePlusqueparfaite, taille, cheminPlusqueparfait, sortix, sorty);
     int sortieImparfaite = LabyrintheImparfait(matrice_adjacenceImparfaite, taille, entreX, entreY, 5);
-    AfficheDonjon(matrice_adjacenceImparfaite, taille);
+    AfficheDonjon(matrice_adjacenceImparfaite, taille, sortix, sorty);
     vector<pair<int, int>> cheminImparfait = Dijkstra(matrice_adjacenceImparfaite, taille, 0, 0, sortix, sorty);
-    AfficheDijkstra(matrice_adjacenceImparfaite, taille, cheminImparfait);
-
+    AfficheDijkstra(matrice_adjacenceImparfaite, taille, cheminImparfait, sortix, sorty);
     return 0;
 }
 
