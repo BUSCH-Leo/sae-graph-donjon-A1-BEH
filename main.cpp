@@ -13,6 +13,8 @@ using namespace std;
 
 int main() {
 
+    SetConsoleOutputCP(CP_UTF8); // pour éviter d'avoir mauvais charactère
+    
     srand(time(NULL));
 
     FauxChargement(50);
@@ -23,7 +25,6 @@ int main() {
     int entreX=0;
     int entreY=0;
 
-    SetConsoleOutputCP(CP_UTF8); // pour éviter d'avoir mauvais charactère
 
     // On demande à l'utilisateur la taille du labyrinthe
     int taille = 0;
