@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void AfficheDijkstra(const vector<vector<bool>>& matrice_adjacence, int taille, const vector<pair<int, int>>& cheminDijkstra) {
+void AfficheDijkstra(const vector<vector<bool>>& matrice_adjacence, int taille, const vector<pair<int, int>>& cheminDijkstra, int sortieX, int sortieY) {
     
     // Première ligne
     cout<<"  ";
@@ -24,9 +24,10 @@ void AfficheDijkstra(const vector<vector<bool>>& matrice_adjacence, int taille, 
                 }
             }
             if (estCheminDijkstra) {
-                cout << "\033[34m▓▓\033[0m"; // Affiche "O" pour indiquer le chemin de Dijkstra
+                if ((i==0 && j==0) || (i==sortieX && j==sortieY)) cout << "\033[44m[]\033[0m";
+                else cout << "\033[34m▓▓\033[0m";
             } else {
-                cout << "░░"; // Affiche l'espace si ce n'est pas le chemin de Dijkstra
+                cout << "░░";
             }
             
             if (j != taille-1) {
