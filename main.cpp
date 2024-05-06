@@ -18,7 +18,7 @@ int main() {
     FauxChargement(50);
     system("Clear");
 
-    cout<<"\n██╗      █████╗ ██████╗ ██╗   ██╗███████╗███████╗███████╗███████╗███████╗\n██║     ██╔══██╗██╔══██╗╚██╗ ██╔╝██╔════╝██╔════╝██╔════╝██╔════╝██╔════╝\n██║     ███████║██████╔╝ ╚████╔╝ █████╗  █████╗  ███████╗███████╗█████╗  \n██║     ██╔══██║██╔══██╗  ╚██╔╝  ██╔══╝  ██╔══╝  ╚════██║╚════██║██╔══╝  \n███████╗██║  ██║██████╔╝   ██║   ██║     ███████╗███████║███████║███████╗\n╚══════╝╚═╝  ╚═╝╚═════╝    ╚═╝   ╚═╝     ╚══════╝╚══════╝╚══════╝╚══════╝\n"<<endl;
+    cout<<"\n     █████████   ███████████   █████ █████\n    ███░░░░░███ ░░███░░░░░███ ░░███ ░░███ \n   ░███    ░███  ░███    ░███  ░░███ ███  \n   ░███████████  ░██████████    ░░█████   \n   ░███░░░░░███  ░███░░░░░███    ███░███  \n   ░███    ░███  ░███    ░███   ███ ░░███ \n   █████   █████ █████   █████ █████ █████\n  ░░░░░   ░░░░░ ░░░░░   ░░░░░ ░░░░░ ░░░░░ \n"<<endl;
 
     int entreX=0;
     int entreY=0;
@@ -37,17 +37,15 @@ int main() {
 
     // Création d'une matrice d'adjacence de n*n taille (pour lier pouvoir lier tout les sommets)   
     vector<vector<bool>> matrice_adjacence(taille * taille, vector<bool>(taille * taille, false));
-    int sortie = LabyrintheParfait(matrice_adjacence, taille, entreX, entreY);
+    int sortie = LabyrintheImparfait(matrice_adjacence, taille, entreX, entreY,75);
 
     AfficheDonjon(matrice_adjacence, taille);
 
     cout<<endl;
 
-    sortie = LabyrintheParfait(matrice_adjacence, taille, entreX, entreY);
-
-    AfficheDonjon(matrice_adjacence, taille);
-
     vector<pair<int, int>> cheminParcouru = Dijkstra(matrice_adjacence, taille, 0, 0, taille-1, taille-1);
+
+    cout<<endl;
 
     AfficheDijkstra(matrice_adjacence, taille, cheminParcouru);
 
