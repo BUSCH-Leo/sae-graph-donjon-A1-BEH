@@ -20,6 +20,25 @@ int main() {
     /*
     FauxChargement(50);
     */
+
+    unsigned int seed;
+    char choix_seed;
+    cout << "Voulez-vous entrer une seed manuellement ? (o/n) : ";
+    cin >> choix_seed;
+
+    if (choix_seed == 'o' || choix_seed == 'O') {
+        cout << "Entrez la seed : ";
+        cin >> seed;
+    }
+    else {
+        random_device rd;
+        seed = rd();
+        cout << "Seed aléatoire générée : " << seed << endl;
+    }
+    srand(seed);
+    cout << "la seed est :" << seed << endl;
+    Sleep(5000);
+
     system("Clear");
 
     cout<<"\n     █████████   ███████████   █████ █████\n    ███░░░░░███ ░░███░░░░░███ ░░███ ░░███ \n   ░███    ░███  ░███    ░███  ░░███ ███  \n   ░███████████  ░██████████    ░░█████   \n   ░███░░░░░███  ░███░░░░░███    ███░███  \n   ░███    ░███  ░███    ░███   ███ ░░███ \n   █████   █████ █████   █████ █████ █████\n  ░░░░░   ░░░░░ ░░░░░   ░░░░░ ░░░░░ ░░░░░ \n"<<endl;
