@@ -5,6 +5,7 @@
 #include <windows.h>
 #include "affichage/AfficheDonjon.cpp"
 #include "affichage/AfficheDijkstra.cpp"
+#include "affichage/dicte.cpp"
 #include "generation/generateur.cpp"
 #include "parcours/Dijkstra.cpp"
 #include "chargement/chargement.cpp"
@@ -17,75 +18,181 @@ int main() {
 
     srand(time(NULL));
 
-    /*
-    FauxChargement(50);
-    */
+    FauxChargement(50); // à mettre en commentaire si il y a des problèmes
     system("Clear");
 
-    cout<<"\n     █████████   ███████████   █████ █████\n    ███░░░░░███ ░░███░░░░░███ ░░███ ░░███ \n   ░███    ░███  ░███    ░███  ░░███ ███  \n   ░███████████  ░██████████    ░░█████   \n   ░███░░░░░███  ░███░░░░░███    ███░███  \n   ░███    ░███  ░███    ░███   ███ ░░███ \n   █████   █████ █████   █████ █████ █████\n  ░░░░░   ░░░░░ ░░░░░   ░░░░░ ░░░░░ ░░░░░ \n"<<endl;
+    // Déclaration des variables
 
     int entreX=0;
     int entreY=0;
 
+    char config_d = ' ';
+    bool ChoixConfig = false;
+
     string seed;
     int seed_convert;
     char choix_seed;
-    cout << "Voulez-vous entrer une seed manuellement ? (o/n) : ";
-    cin >> choix_seed;
 
-    if (choix_seed == 'o' || choix_seed == 'O') {
-        cout << "Entrez la seed : ";
-        cin >> seed;
-    }
-    else {
-        random_device rd;
-        seed = rd();
-        cout << "Seed aléatoire générée : " << seed << endl;
-    }
-    for (char c : seed) {
-        int asciiValue = static_cast<int>(c);
-        seed_convert = seed_convert * 10 + asciiValue;
-    }
-
-    cout << "seed_convert final : " << seed_convert << endl;
-
-    srand(seed_convert);
-    cout << "La seed choisi est : " << seed << endl;
-
-    // On demande à l'utilisateur la taille du labyrinthe
     int taille = 0;
-    while (taille <= 0 || taille > 160) {
-        cout << "\nEntrez la taille du labyrinthe : ";
-        cin >> taille;
-        if (taille <= 0 || taille > 160) {
-            cout << "[!] Veuillez rentrer une valeur entre 1 et 160." << endl;
+    
+    int sortix = 0;
+    int sorty = 0;
+
+    int type_laby = 0;
+
+    int prct_imparfait = 10;
+
+    // Affichage ARX
+
+    cout<<"\n     █████████   ███████████   █████ █████\n    ███░░░░░███ ░░███░░░░░███ ░░███ ░░███ \n   ░███    ░███  ░███    ░███  ░░███ ███  \n   ░███████████  ░██████████    ░░█████   \n   ░███░░░░░███  ░███░░░░░███    ███░███  \n   ░███    ░███  ░███    ░███   ███ ░░███ \n   █████   █████ █████   █████ █████ █████\n  ░░░░░   ░░░░░ ░░░░░   ░░░░░ ░░░░░ ░░░░░ \n"<<endl;
+
+    // Demander le type de configuration
+    
+    while (ChoixConfig != true) {
+        cout << "\n     Souhaitez-vous une configuration rapide ? (o/n)\n     Choix : ";
+        cin >> config_d;
+
+        if (config_d == 'O' || config_d == 'o') {
+
+            // Choix de la seed
+            
+            random_device rd;
+            seed_convert = rand() % 1000000;
+
+            cout << "\n     1. La seed aléatoirement choisi est : " << seed_convert << endl;
+            srand(seed_convert);
+
+            // Choix de la taille du labyrinthe
+
+            taille = (rand() % 10)+20;
+
+            cout << "\n     2. La taille aléatoirement choisi est : " << taille << endl;
+
+            // Choix de la sortie aléatoire
+
+            sortix = rand() % taille;
+            sorty = rand() % taille;
+            
+            cout << "\n     3. La sortie se situera en :\n     X = " << sortix << "\n     Y = " << sorty << endl;
+
+            // Création d'un labyrinthe imparfait avec 10% de murs retirés
+
+            cout << "\n     4. Le labyrinthe est défini comme 'Imparfait' avec 10% de murs retirés." << endl;
+            vector<vector<bool>> matrice_adjacence(taille * taille, vector<bool>(taille * taille, false));
+            LabyrintheImparfait(matrice_adjacence, taille, entreX, entreY, prct_imparfait);
+
+            // Préparation du prochain écran
+
+            cout<<endl;
+            Attente();
+
+            system("Clear");
+            ChoixConfig = true;
+
+            // Affichage des labyrinthes
+
+            cout<<"\n     █████████   ███████████   █████ █████\n    ███░░░░░███ ░░███░░░░░███ ░░███ ░░███ \n   ░███    ░███  ░███    ░███  ░░███ ███  \n   ░███████████  ░██████████    ░░█████   \n   ░███░░░░░███  ░███░░░░░███    ███░███  \n   ░███    ░███  ░███    ░███   ███ ░░███ \n   █████   █████ █████   █████ █████ █████\n  ░░░░░   ░░░░░ ░░░░░   ░░░░░ ░░░░░ ░░░░░ \n"<<endl;
+
+            cout << "\n     Affichage du donjon :\n" << endl;
+            AfficheDonjon(matrice_adjacence, taille, sortix, sorty);
+
+            cout << "\n     Affichage du plus court chemin :" << endl;
+            vector<pair<int, int>> cheminParfait = Dijkstra(matrice_adjacence, taille, 0, 0, sortix, sorty);
+            AfficheDijkstra(matrice_adjacence, taille, cheminParfait, sortix, sorty);
+        }
+        else if (config_d == 'N' || config_d == 'n') {
+
+            // Choix de la seed
+
+            cout << "\n     1. Entrez la seed : ";
+            cin >> seed;
+
+            for (char c : seed) {
+                int asciiValue = static_cast<int>(c);
+                seed_convert = seed_convert * 10 + asciiValue;
+            }
+
+            srand(seed_convert);
+            cout << "     La seed choisi est : " << seed << "\n     Ou " << seed_convert << " en Ascii." << endl;
+
+            // Choix de la taille du labyrinthe
+
+            cout << "\n     2. Entrez la taille du labyrinthe (conseillé en dessous de 50) : ";
+            cin >> taille;
+
+            while (taille <= 1 || taille > 160) {
+                cout << "\n     [!] Veuillez rentrer une valeur entre 2 et 160." << endl;
+                cout << "\n     Entrez la taille du labyrinthe (conseillé en dessous de 50) : ";
+                cin >> taille;
+            }
+
+            // Choix de la sortie aléatoire
+
+            sortix = rand() % taille;
+            sorty = rand() % taille;
+            
+            cout << "\n     3. La sortie se situera en :\n     X = " << sortix << "\n     Y = " << sorty << endl;
+
+            // Création d'un labyrinthe choisi
+
+            cout << "\n     4. Veuillez choisir le type de labyrinthe selon la liste suivante :" << endl;
+            cout << "     1 - Labyrinthe Parfait (un seul chemin possible)" << endl;
+            cout << "     2 - Labyrinthe Imparfait (plusieurs chemins possibles)" << endl;
+            cout << "     3 - Labyrinthe 'Plus Que Parfait' (utilisation du labyrinthe parfait 2×)" << endl;
+            cout << "     Votre choix : ";
+            cin >> type_laby;
+            
+            while (type_laby <= 0 || type_laby > 3) {
+                cout << "\n     [!] Le choix est incorrect, veuillez réessayer." << endl;
+                cout << "\n     Votre choix : ";
+                cin >> type_laby;
+            }
+
+            vector<vector<bool>> matrice_adjacence(taille * taille, vector<bool>(taille * taille, false));
+
+            if (type_laby == 1) {
+                LabyrintheParfait(matrice_adjacence, taille, entreX, entreY);
+            }
+            else if (type_laby == 2) {
+                cout << "\n     5. Entrez le pourcentage de murs à retirer dans le labyrinthe imparfait : ";
+                cin >> prct_imparfait;
+
+                while (prct_imparfait<0 || prct_imparfait>100) {
+                    cout << "\n     [!] Veuillez entrer une valeur entre 0 et 100." << endl;
+                    cout << "\n     Votre choix : ";
+                    cin >> prct_imparfait;
+                }
+
+                if (prct_imparfait >= 95) cout << "\n     [!] Il arrive parfois qu'un pourcentage élevé possède des erreurs à la suppression des murs" << endl;
+                LabyrintheImparfait(matrice_adjacence, taille, entreX, entreY, prct_imparfait);
+            }
+            else if (type_laby == 3) {
+                LabyrinthePlusQueParfait(matrice_adjacence, taille, entreX, entreY);
+            }
+
+            // Préparation du prochain écran
+
+            cout<<endl;
+            Attente();
+
+            system("Clear");
+            ChoixConfig = true;
+
+            // Affichage des labyrinthes
+
+            cout<<"\n     █████████   ███████████   █████ █████\n    ███░░░░░███ ░░███░░░░░███ ░░███ ░░███ \n   ░███    ░███  ░███    ░███  ░░███ ███  \n   ░███████████  ░██████████    ░░█████   \n   ░███░░░░░███  ░███░░░░░███    ███░███  \n   ░███    ░███  ░███    ░███   ███ ░░███ \n   █████   █████ █████   █████ █████ █████\n  ░░░░░   ░░░░░ ░░░░░   ░░░░░ ░░░░░ ░░░░░ \n"<<endl;
+
+            cout << "\n     Affichage du donjon :\n" << endl;
+            AfficheDonjon(matrice_adjacence, taille, sortix, sorty);
+
+            cout << "\n     Affichage du plus court chemin :" << endl;
+            vector<pair<int, int>> cheminParfait = Dijkstra(matrice_adjacence, taille, 0, 0, sortix, sorty);
+            AfficheDijkstra(matrice_adjacence, taille, cheminParfait, sortix, sorty);
+        }
+        else {
+            cout << "\n     [!] Le choix est incorrect, veuillez réessayer." << endl;
         }
     }
-    cout<<endl;
 
-    int sortix = rand() % taille;
-    int sorty = rand() % taille;
-
-    cout << sortix << " " << sorty << endl;
-
-    vector<vector<bool>> matrice_adjacenceParfaite(taille * taille, vector<bool>(taille * taille, false));
-    vector<vector<bool>> matrice_adjacencePlusqueparfaite(taille * taille, vector<bool>(taille * taille, false));
-    vector<vector<bool>> matrice_adjacenceImparfaite(taille * taille, vector<bool>(taille * taille, false));
-    int sortieParfaite = LabyrintheParfait(matrice_adjacenceParfaite, taille, entreX, entreY);
-    AfficheDonjon(matrice_adjacenceParfaite, taille, sortix, sorty);
-    vector<pair<int, int>> cheminParfait = Dijkstra(matrice_adjacenceParfaite, taille, 0, 0, sortix, sorty);
-    AfficheDijkstra(matrice_adjacenceParfaite, taille, cheminParfait, sortix, sorty);
-    cout<<"Labyrinthe 'Plus que parfait' :"<<endl;
-    int sortiePlusqueparfaite = LabyrinthePlusQueParfait(matrice_adjacencePlusqueparfaite, taille, entreX, entreY);
-    AfficheDonjon(matrice_adjacencePlusqueparfaite, taille, sortix, sorty);
-    cout<<"\n"<<endl;
-    vector<pair<int, int>> cheminPlusqueparfait = Dijkstra(matrice_adjacencePlusqueparfaite, taille, 0, 0, sortix, sorty);
-    AfficheDijkstra(matrice_adjacencePlusqueparfaite, taille, cheminPlusqueparfait, sortix, sorty);
-    int sortieImparfaite = LabyrintheImparfait(matrice_adjacenceImparfaite, taille, entreX, entreY, 5);
-    AfficheDonjon(matrice_adjacenceImparfaite, taille, sortix, sorty);
-    vector<pair<int, int>> cheminImparfait = Dijkstra(matrice_adjacenceImparfaite, taille, 0, 0, sortix, sorty);
-    AfficheDijkstra(matrice_adjacenceImparfaite, taille, cheminImparfait, sortix, sorty);
-    
     return 0;
 }
-
