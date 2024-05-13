@@ -82,18 +82,8 @@ vector<pair<int, int>> Dijkstra(vector<vector<bool>>& matrice_adjacence, int tai
         distanceParcourue++; // Incrémenter le compteur de distance
     }
 
-    // Afficher le chemin parcouru
-    cout << "Chemin parcouru : ";
-    for (int i = chemin.size() - 1; i >= 0; --i) {
-        cout << "(" << chemin[i].first << "," << chemin[i].second << ")";
-        if (i != 0) {
-            cout << " -> ";
-        }
-    }
-    cout << endl;
-
     // Afficher la distance minimale entre le départ et l'arrivée
-    cout << "Distance minimale : " << distanceParcourue << endl;
+    cout << "\n     - Distance minimale : " << distanceParcourue << "\n" << endl;
 
     // Retourner le chemin parcouru
     return chemin;
