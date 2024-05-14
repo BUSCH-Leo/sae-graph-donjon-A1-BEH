@@ -1,9 +1,10 @@
 #include <iostream>
 #include <vector>
+#include "../generation/generateur.cpp"
 
 using namespace std;
 
-void AfficheDonjon(const vector<vector<bool>>& matrice_adjacence, int taille, int sortieX, int sortieY) {
+void AfficheDonjon(const vector<vector<bool>>& matrice_adjacence, int taille, int sortieX, int sortieY, loot** LootsMatrix) {
     
     // Première ligne
     cout<<"  ";
@@ -17,6 +18,9 @@ void AfficheDonjon(const vector<vector<bool>>& matrice_adjacence, int taille, in
         cout<<"  ██";
         for (int j=0; j<taille; ++j) {
             if ((i==0 && j==0) || (i==sortieX && j==sortieY)) cout << "\033[100m[]\033[0m";
+            else if (LootsMatrix[i][j].type == "Ennemi") cout << "\033[100mඞ!\033[0m";
+            else if (LootsMatrix[i][j].type == "Soin") cout << "\033[100m♥" << LootsMatrix[i][j].value << "\033[0m";
+            else if (LootsMatrix[i][j].type == "Tresor") cout << "\033[100m💰\033[0m";
             else cout << "░░";
 
             if (j != taille-1) {
