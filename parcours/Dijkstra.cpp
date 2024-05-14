@@ -44,25 +44,19 @@ vector<pair<int, int>> Dijkstra(vector<vector<bool>>& matrice_adjacence, int tai
         Node curr = pq.top();
         pq.pop();
 
-        // Si nous atteignons le nœud d'arrivée, nous pouvons arrêter
         if (curr.x == arriveeX && curr.y == arriveeY)
             break;
 
-        // Parcourir les nœuds voisins
         for (int i = 0; i < 4; ++i) {
             int newX = curr.x + dx[i];
             int newY = curr.y + dy[i];
-            // Vérifier si les nouvelles coordonnées sont valides
             if (isValid(newX, newY, taille) && matrice_adjacence[curr.x * taille + curr.y][newX * taille + newY]) {
-                // Mettre à jour la distance si elle est plus petite
                 if (distance[curr.x][curr.y] + 1 < distance[newX][newY]) {
                     distance[newX][newY] = distance[curr.x][curr.y] + 1;
                     pq.push(Node(newX, newY, distance[newX][newY]));
-                    // Mettre à jour les coordonnées précédentes uniquement si une nouvelle distance minimale est trouvée
                     previous[newX][newY] = {curr.x, curr.y};
 
                 } else if (distance[curr.x][curr.y] + 1 == distance[newX][newY] && previous[newX][newY] == make_pair(-1, -1)) {
-                    // Si la distance est la même mais les coordonnées précédentes n'ont pas encore été mises à jour, mettez à jour maintenant
                     previous[newX][newY] = {curr.x, curr.y};
                 }
             }
@@ -72,14 +66,14 @@ vector<pair<int, int>> Dijkstra(vector<vector<bool>>& matrice_adjacence, int tai
     // Reconstruire le chemin à partir des coordonnées précédentes
     vector<pair<int, int>> chemin;
     int x = arriveeX, y = arriveeY;
-    int distanceParcourue = 0; // Initialisation du compteur de distance
+    int distanceParcourue = 0;
     while (x != -1 && y != -1 && x < taille && y < taille) {
         chemin.push_back({y, x});
         int tempX = previous[x][y].first;
         int tempY = previous[x][y].second;
         x = tempX;
         y = tempY;
-        distanceParcourue++; // Incrémenter le compteur de distance
+        distanceParcourue++;
     }
 
     // Afficher la distance minimale entre le départ et l'arrivée
