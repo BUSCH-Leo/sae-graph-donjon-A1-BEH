@@ -17,8 +17,8 @@ void dicte_phrase(std::string phrase,bool endligne, int vites){
 	// permet d'avoir 1 endl si la condition endligne est true
 }
 
-void Attente() {
-    for (int i=0; i<5; ++i) {
+void Attente(int secondes) {
+    for (int i=0; i<secondes; ++i) {
 		std::cout<<"    ";
 		dicte_phrase(" ...",1,250);
 		std::cout<<"\033[A\33[2K\r";
