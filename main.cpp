@@ -6,7 +6,6 @@
 #include "affichage/AfficheDonjon.cpp"
 #include "affichage/AfficheDijkstra.cpp"
 #include "affichage/dicte.cpp"
-#include "generation/generateur.cpp"
 #include "parcours/Dijkstra.cpp"
 #include "chargement/chargement.cpp"
 
@@ -41,6 +40,7 @@ int main() {
     int type_laby = 0;
 
     int prct_imparfait = 10;
+    int prct_proba = 15;
 
     // Affichage ARX
 
@@ -81,10 +81,15 @@ int main() {
             vector<vector<bool>> matrice_adjacence(taille * taille, vector<bool>(taille * taille, false));
             LabyrintheImparfait(matrice_adjacence, taille, entreX, entreY, prct_imparfait);
 
+            // Placement des loots
+
+            cout << "\n     5. Placement des loots aléatoirement (par défaut 15 %)." << endl;
+            loot** LootsMatrix = PlaceLoot(matrice_adjacence, taille, prct_proba);
+
             // Préparation du prochain écran
 
             cout<<endl;
-            Attente();
+            Attente(3);
 
             system("Clear");
             ChoixConfig = true;
@@ -94,11 +99,11 @@ int main() {
             cout<<"\n     █████████   ███████████   █████ █████\n    ███░░░░░███ ░░███░░░░░███ ░░███ ░░███ \n   ░███    ░███  ░███    ░███  ░░███ ███  \n   ░███████████  ░██████████    ░░█████   \n   ░███░░░░░███  ░███░░░░░███    ███░███  \n   ░███    ░███  ░███    ░███   ███ ░░███ \n   █████   █████ █████   █████ █████ █████\n  ░░░░░   ░░░░░ ░░░░░   ░░░░░ ░░░░░ ░░░░░ \n"<<endl;
 
             cout << "\n     Affichage du donjon :\n" << endl;
-            AfficheDonjon(matrice_adjacence, taille, sortix, sorty);
+            AfficheDonjon(matrice_adjacence, taille, sortix, sorty, LootsMatrix);
 
             cout << "\n     Affichage du plus court chemin :" << endl;
             vector<pair<int, int>> cheminParfait = Dijkstra(matrice_adjacence, taille, 0, 0, sortix, sorty);
-            AfficheDijkstra(matrice_adjacence, taille, cheminParfait, sortix, sorty);
+            AfficheDijkstra(matrice_adjacence, taille, cheminParfait, sortix, sorty, LootsMatrix);
         }
         else if (config_d == 'N' || config_d == 'n') {
 
@@ -154,7 +159,7 @@ int main() {
                 LabyrintheParfait(matrice_adjacence, taille, entreX, entreY);
             }
             else if (type_laby == 2) {
-                cout << "\n     5. Entrez le pourcentage de murs à retirer dans le labyrinthe imparfait : ";
+                cout << "\n     Entrez le pourcentage de murs à retirer dans le labyrinthe imparfait : ";
                 cin >> prct_imparfait;
 
                 while (prct_imparfait<0 || prct_imparfait>100) {
@@ -170,10 +175,23 @@ int main() {
                 LabyrinthePlusQueParfait(matrice_adjacence, taille, entreX, entreY);
             }
 
+            // Placement des loots
+
+            cout << "\n     5. Veuillez envoyer le pourcentage d'apparition des loots (conseillé 15 %)\n     Votre choix : ";
+            cin >> prct_proba;
+
+            while (prct_proba<0 && prct_proba>100) {
+                cout << "\n     [!] Veuillez entrer une valeur entre 0 et 100." << endl;
+                cout << "\n     Votre choix : ";
+                cin >> prct_proba;
+            }
+
+            loot** LootsMatrix = PlaceLoot(matrice_adjacence, taille, prct_proba);
+
             // Préparation du prochain écran
 
             cout<<endl;
-            Attente();
+            Attente(3);
 
             system("Clear");
             ChoixConfig = true;
@@ -183,11 +201,11 @@ int main() {
             cout<<"\n     █████████   ███████████   █████ █████\n    ███░░░░░███ ░░███░░░░░███ ░░███ ░░███ \n   ░███    ░███  ░███    ░███  ░░███ ███  \n   ░███████████  ░██████████    ░░█████   \n   ░███░░░░░███  ░███░░░░░███    ███░███  \n   ░███    ░███  ░███    ░███   ███ ░░███ \n   █████   █████ █████   █████ █████ █████\n  ░░░░░   ░░░░░ ░░░░░   ░░░░░ ░░░░░ ░░░░░ \n"<<endl;
 
             cout << "\n     Affichage du donjon :\n" << endl;
-            AfficheDonjon(matrice_adjacence, taille, sortix, sorty);
+            AfficheDonjon(matrice_adjacence, taille, sortix, sorty, LootsMatrix);
 
             cout << "\n     Affichage du plus court chemin :" << endl;
             vector<pair<int, int>> cheminParfait = Dijkstra(matrice_adjacence, taille, 0, 0, sortix, sorty);
-            AfficheDijkstra(matrice_adjacence, taille, cheminParfait, sortix, sorty);
+            AfficheDijkstra(matrice_adjacence, taille, cheminParfait, sortix, sorty, LootsMatrix);
         }
         else {
             cout << "\n     [!] Le choix est incorrect, veuillez réessayer." << endl;
