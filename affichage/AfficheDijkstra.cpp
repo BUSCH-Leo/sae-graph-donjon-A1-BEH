@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void AfficheDijkstra(const vector<vector<bool>>& matrice_adjacence, int taille, const vector<pair<int, int>>& cheminDijkstra, int sortieX, int sortieY) {
+void AfficheDijkstra(const vector<vector<bool>>& matrice_adjacence, int taille, const vector<pair<int, int>>& cheminDijkstra, int sortieX, int sortieY, loot** LootsMatrix) {
     
     // Première ligne
     cout<<"  ";
@@ -25,9 +25,15 @@ void AfficheDijkstra(const vector<vector<bool>>& matrice_adjacence, int taille, 
             }
             if (estCheminDijkstra) {
                 if ((i==0 && j==0) || (i==sortieX && j==sortieY)) cout << "\033[44m[]\033[0m";
+                else if (LootsMatrix[i][j].type == "Ennemi") cout << "\033[44mඞ!\033[0m";
+                else if (LootsMatrix[i][j].type == "Soin") cout << "\033[44m♥" << LootsMatrix[i][j].value << "\033[0m";
+                else if (LootsMatrix[i][j].type == "Tresor") cout << "\033[44m💰\033[0m";
                 else cout << "\033[34m▓▓\033[0m";
             } else {
-                cout << "░░";
+                if (LootsMatrix[i][j].type == "Ennemi") cout << "\033[100mඞ!\033[0m";
+                else if (LootsMatrix[i][j].type == "Soin") cout << "\033[100m♥" << LootsMatrix[i][j].value << "\033[0m";
+                else if (LootsMatrix[i][j].type == "Tresor") cout << "\033[100m💰\033[0m";
+                else cout << "░░";
             }
             
             if (j != taille-1) {
