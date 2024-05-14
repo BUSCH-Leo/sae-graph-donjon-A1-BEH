@@ -6,6 +6,14 @@
 
 using namespace std;
 
+struct loot {
+	string type;
+	int value;
+	loot () {
+		type = "none";
+		value = 0;
+	}
+};
 
 int voisinrandom(vector<vector<bool>>& matrice_adjacence, vector<bool>& visite, int cellule, int taille) {
     vector<int> cellules;
@@ -89,4 +97,31 @@ int LabyrintheImparfait(vector<vector<bool>>& matrice_adjacence, int taille, int
         }
     }
     return cellule;
+}
+
+loot** PlaceLoot(vector<vector<bool>>& matrice_adjacence, int taille, int proba) {
+	loot** LootsMatrix = new loot*[taille];
+	for (int i = 0; i < taille; ++i) {
+        LootsMatrix[i] = new loot[taille];
+    }
+	
+	for (int i = 0; i < taille; ++i) {
+		for (int j = 0; j < taille; ++j) {
+			int randType = rand() % 100;
+			int randValue = (rand() % 8)+1;	// Valeur à changer au besoin
+			if (randType < proba/2) {
+				LootsMatrix[i][j].type = "Ennemi";
+				LootsMatrix[i][j].value = randValue;
+			}
+			else if (randType > proba/2 && randType <= (proba/2+proba/4)) {
+				LootsMatrix[i][j].type = "Soin";
+				LootsMatrix[i][j].value = randValue;
+			}
+			else if (randType > (proba/2+proba/4) && randType <= proba) {
+				LootsMatrix[i][j].type = "Tresor";
+				LootsMatrix[i][j].value = randValue;
+			}
+		}
+	}
+	return LootsMatrix;
 }
