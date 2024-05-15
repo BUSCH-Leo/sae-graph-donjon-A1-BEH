@@ -16,7 +16,6 @@ int PFC(int degats) {
     
     while (fin_jeu == false) {
         termkit::clear();
-        cout<<"\n     █████████   ███████████   █████ █████\n    ███░░░░░███ ░░███░░░░░███ ░░███ ░░███ \n   ░███    ░███  ░███    ░███  ░░███ ███  \n   ░███████████  ░██████████    ░░█████   \n   ░███░░░░░███  ░███░░░░░███    ███░███  \n   ░███    ░███  ░███    ░███   ███ ░░███ \n   █████   █████ █████   █████ █████ █████\n  ░░░░░   ░░░░░ ░░░░░   ░░░░░ ░░░░░ ░░░░░ \n"<<endl;
         cout << "\n     Vous avez rencontré un ennemi ! Gagnez le combat pour ne pas perdre de points de vie." << endl;
         cout << "     Dégats de l'ennemi : " << degats << endl;
 
