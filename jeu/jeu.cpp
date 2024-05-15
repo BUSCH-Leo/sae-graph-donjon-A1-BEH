@@ -15,7 +15,7 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
     */
 
     bool fin_jeu = false;
-    bool releve = false;
+    char key_pressed = ' ';
 
     // Initialisation du joueur
 
@@ -44,8 +44,7 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
 
     while (fin_jeu == false) {
         termkit::clear();
-        cout<<"\n     █████████   ███████████   █████ █████\n    ███░░░░░███ ░░███░░░░░███ ░░███ ░░███ \n   ░███    ░███  ░███    ░███  ░░███ ███  \n   ░███████████  ░██████████    ░░█████   \n   ░███░░░░░███  ░███░░░░░███    ███░███  \n   ░███    ░███  ░███    ░███   ███ ░░███ \n   █████   █████ █████   █████ █████ █████\n  ░░░░░   ░░░░░ ░░░░░   ░░░░░ ░░░░░ ░░░░░ \n"<<endl;
-
+        
         cout << "\n     Votre vie : " << joueur_value << " \033[91m♥\033[0m" << endl;
         cout << "     Votre argent : " << joueur_coins << " 💰" << endl;
 
@@ -83,35 +82,23 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
 
         // Detection des touches
 
-        if (releve == true) {
-            if (!(GetAsyncKeyState('Z') & 0x8000)
-            && !(GetAsyncKeyState('Q') & 0x8000)
-            && !(GetAsyncKeyState('S') & 0x8000)
-            && !(GetAsyncKeyState('D') & 0x8000)) releve = false;
-            else releve = true;
-        }
+        key_pressed = termkit::getch();
+        cout<<key_pressed<<endl;
 
-        termkit::getch();
+        // Touche séléctionnée
 
-        // Aide possible
-
-        if (GetAsyncKeyState('A') & 0x8000 && releve == false && dijkstra_pass == true) {
+        if (key_pressed == 'a' && dijkstra_pass == true) {
             cout << "\b \b";
             termkit::clear();
-            cout<<"\n     █████████   ███████████   █████ █████\n    ███░░░░░███ ░░███░░░░░███ ░░███ ░░███ \n   ░███    ░███  ░███    ░███  ░░███ ███  \n   ░███████████  ░██████████    ░░█████   \n   ░███░░░░░███  ░███░░░░░███    ███░███  \n   ░███    ░███  ░███    ░███   ███ ░░███ \n   █████   █████ █████   █████ █████ █████\n  ░░░░░   ░░░░░ ░░░░░   ░░░░░ ░░░░░ ░░░░░ \n"<<endl;
+            
             cout << "\n     [Aide] Le plus court chemin possible est le suivant :" << endl;
-            vector<pair<int, int>> cheminParfait = Dijkstra(matrice_adjacence, taille, 0, 0, sortieX, sortieY);
+            vector<pair<int, int>> cheminParfait = Dijkstra(matrice_adjacence, taille, joueur_y, joueur_x, sortieX, sortieY);
             AfficheDijkstra(matrice_adjacence, taille, cheminParfait, sortieX, sortieY, LootsMatrix);
 
             cout << endl;
             Attente(3);
-
-            releve = true;
         }
-
-        // Shop
-
-        if (GetAsyncKeyState('E') & 0x8000 && releve == false) {
+        else if (key_pressed == 'e') {
             cout << "\b \b";
 
             choix_shop = Shop(joueur_coins, dijkstra_pass);
@@ -145,13 +132,8 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
 
                 joueur_coins -= 5;
             }
-
-            releve = true;
         }
-        
-        // Touches principales
-
-        if (GetAsyncKeyState('Z') & 0x8000 && releve == false) {
+        else if (key_pressed == 'z') {
             cout << "\b \b";
             if (joueur_y-1 >= 0) {
                 if (matrice_adjacence[joueur_y * taille + joueur_x][(joueur_y - 1) * taille + joueur_x] == true) {
@@ -166,9 +148,8 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
                     LootsMatrix[joueur_y][joueur_x].value = joueur_value;
                 }
             }
-            releve = true;
         }
-        if (GetAsyncKeyState('Q') & 0x8000 && releve == false) {
+        else if (key_pressed == 'q') {
             cout << "\b \b";
             if (joueur_x-1 >= 0) {
                 if (matrice_adjacence[joueur_y * taille + joueur_x][joueur_y * taille + joueur_x - 1] == true) {
@@ -183,9 +164,8 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
                     LootsMatrix[joueur_y][joueur_x].value = joueur_value;
                 }
             }
-            releve = true;
         }
-        if (GetAsyncKeyState('S') & 0x8000 && releve == false) {
+        else if (key_pressed == 's') {
             cout << "\b \b";
             if (joueur_y+1 < taille) {
                 if (matrice_adjacence[joueur_y * taille + joueur_x][(joueur_y + 1) * taille + joueur_x] == true) {
@@ -200,9 +180,8 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
                     LootsMatrix[joueur_y][joueur_x].value = joueur_value;
                 }
             }
-            releve = true;
         }
-        if (GetAsyncKeyState('D') & 0x8000 && releve == false) {
+        else if (key_pressed == 'd') {
             cout << "\b \b";
             if (joueur_x+1 < taille) {
                 if (matrice_adjacence[joueur_y * taille + joueur_x][joueur_y * taille + joueur_x + 1] == true) {
@@ -217,14 +196,12 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
                     LootsMatrix[joueur_y][joueur_x].value = joueur_value;
                 }
             }
-            releve = true;
         }
 
         // Si on perd
 
         if (joueur_value <= 0 ) {
             termkit::clear();
-            cout<<"\n     █████████   ███████████   █████ █████\n    ███░░░░░███ ░░███░░░░░███ ░░███ ░░███ \n   ░███    ░███  ░███    ░███  ░░███ ███  \n   ░███████████  ░██████████    ░░█████   \n   ░███░░░░░███  ░███░░░░░███    ███░███  \n   ░███    ░███  ░███    ░███   ███ ░░███ \n   █████   █████ █████   █████ █████ █████\n  ░░░░░   ░░░░░ ░░░░░   ░░░░░ ░░░░░ ░░░░░ \n"<<endl;
             cout << "\n     Vous avez perdu !" << endl;
             cout << "     Fin de la partie." << endl;
 
@@ -238,7 +215,7 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
             fin_jeu = true;
         }
 
-        Sleep(10);
+        key_pressed = ' ';
     }
 
     termkit::clear();
