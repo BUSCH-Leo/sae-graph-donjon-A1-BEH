@@ -29,7 +29,7 @@ int main() {
     bool ChoixConfig = false;
 
     string seed;
-    int seed_convert;
+    int seed_convert=0;
     char choix_seed;
 
     int taille = 0;
