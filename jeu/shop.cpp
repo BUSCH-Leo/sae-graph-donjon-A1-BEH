@@ -26,7 +26,7 @@ int Shop(int joueur_coins, bool pass_paye) {
     || (choix == 4 && joueur_coins - 5 < 0)
     || (pass_paye == true && choix == 1)
     ) {
-        if (pass_paye == true) {
+        if (pass_paye == true && choix == 1) {
             cout << "\n     [!] Vous avez déjà payé ce Pass." << endl;
         }
         else {
