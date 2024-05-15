@@ -2,10 +2,13 @@
 
 #include "PFC.cpp"
 #include "shop.cpp"
+#include "../affichage/AfficheTouche.cpp"
 
 using namespace std;
 
 void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int sortieY, loot** LootsMatrix) {
+
+    AfficheTouche();
 
     /*
     ======================================================================================================
