@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int sortieY, loot** LootsMatrix) {
+void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int sortieY, loot** LootsMatrix, int seed) {
 
     AfficheTouche();
 
@@ -108,7 +108,7 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
             
             if (choix_shop == 1) {
                 dijkstra_pass = true;
-                joueur_coins -= 15;
+                joueur_coins -= 20;
             }
             else if (choix_shop == 2) {
                 instakill = true;
@@ -233,4 +233,5 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
     cout << "\n     Le plus court chemin possible était le suivant :" << endl;
     vector<pair<int, int>> cheminParfait = Dijkstra(matrice_adjacence, taille, 0, 0, sortieX, sortieY);
     AfficheDijkstra(matrice_adjacence, taille, cheminParfait, sortieX, sortieY, LootsMatrix);
+    cout << "\n     La seed était : " << seed << "\n" << endl;
 }
