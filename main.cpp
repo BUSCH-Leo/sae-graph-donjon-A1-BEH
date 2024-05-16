@@ -40,6 +40,8 @@ int main() {
 
     int prct_imparfait = 10;
     int prct_proba = 15;
+    float coef_argent = 1;
+    float coef_ennemi = 1;
 
     // Affichage ARX
 
@@ -83,7 +85,16 @@ int main() {
             // Placement des loots
 
             cout << "\n     5. Placement des loots aléatoirement (par défaut 20 %)." << endl;
+
             loot** LootsMatrix = PlaceLoot(matrice_adjacence, taille, prct_proba);
+
+            // Coefficient de l'argent
+
+            cout << "\n     6. Valeur de l'argent fixée à ×1" << endl;
+
+            // Coefficient des ennemis
+
+            cout << "\n     7. Valeur des ennemis fixée à ×1" << endl;
 
             // Préparation du prochain écran
 
@@ -95,7 +106,7 @@ int main() {
 
             // Lancement du jeu
 
-            Jeu(matrice_adjacence, taille, sortix, sorty, LootsMatrix, seed_convert);
+            Jeu(matrice_adjacence, taille, sortix, sorty, LootsMatrix, seed_convert, coef_argent, coef_ennemi);
         }
         else if (config_d == 'N' || config_d == 'n') {
 
@@ -163,7 +174,7 @@ int main() {
                 LabyrintheParfait(matrice_adjacence, taille, entreX, entreY);
             }
             else if (type_laby == 2) {
-                cout << "\n     Entrez le pourcentage de murs à retirer dans le labyrinthe imparfait : ";
+                cout << "\n     Entrez le pourcentage de murs à retirer dans le labyrinthe imparfait (défaut 10 %) : ";
                 cin >> prct_imparfait;
 
                 while (prct_imparfait<0 || prct_imparfait>100) {
@@ -192,6 +203,28 @@ int main() {
 
             loot** LootsMatrix = PlaceLoot(matrice_adjacence, taille, prct_proba);
 
+            // Coefficient de l'argent
+
+            cout << "\n     6. Par combien voulez-vous multiplier la valeur des sacs d'argent ? (défaut ×1)\n     Votre choix : ";
+            cin >> coef_argent;
+
+            while (coef_argent<0) {
+                cout << "\n     [!] Veuillez entrer une valeur supérieur à 0." << endl;
+                cout << "\n     Votre choix : ";
+                cin >> coef_argent;
+            }
+
+            // Coefficient des ennemis
+
+            cout << "\n     7. Par combien voulez-vous multiplier les degats d'ennemis ? (défaut ×1)\n     Votre choix : ";
+            cin >> coef_ennemi;
+
+            while (coef_ennemi<0) {
+                cout << "\n     [!] Veuillez entrer une valeur supérieur à 0." << endl;
+                cout << "\n     Votre choix : ";
+                cin >> coef_ennemi;
+            }
+
             // Préparation du prochain écran
 
             cout<<endl;
@@ -202,7 +235,7 @@ int main() {
 
             // Lancement du jeu
 
-            Jeu(matrice_adjacence, taille, sortix, sorty, LootsMatrix, seed_convert);
+            Jeu(matrice_adjacence, taille, sortix, sorty, LootsMatrix, seed_convert, coef_argent, coef_ennemi);
         }
         else {
             cout << "\n     [!] Le choix est incorrect, veuillez réessayer." << endl;
