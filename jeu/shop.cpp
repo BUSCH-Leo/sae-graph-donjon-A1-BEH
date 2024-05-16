@@ -10,7 +10,7 @@ int Shop(int joueur_coins, bool pass_paye) {
     cout << "\n     Bienvenue dans le magasin ! Voici votre argent : " << joueur_coins << " 💰" << endl;
 
     cout << "\n     Voici les articles possible :" << endl;
-    cout << "     - Pass PlusCourtChemin (15 💰)   -> Choix 1" << endl;
+    cout << "     - Pass PlusCourtChemin (20 💰)   -> Choix 1" << endl;
     cout << "     - InstaKill sur 1 ennemi (5 💰)  -> Choix 2" << endl;
     cout << "     - Potion de vie +5 ♥ (10 💰)     -> Choix 3" << endl;
     cout << "     - Téléportation aléatoire (5 💰) -> Choix 4" << endl;
@@ -20,7 +20,7 @@ int Shop(int joueur_coins, bool pass_paye) {
     cin >> choix;
 
     while (choix < 0 || choix > 4 
-    || (choix == 1 && joueur_coins - 15 < 0)
+    || (choix == 1 && joueur_coins - 20 < 0)
     || (choix == 2 && joueur_coins - 5 < 0)
     || (choix == 3 && joueur_coins - 10 < 0)
     || (choix == 4 && joueur_coins - 5 < 0)
