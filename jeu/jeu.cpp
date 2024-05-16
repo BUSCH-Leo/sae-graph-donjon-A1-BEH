@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int sortieY, loot** LootsMatrix, int seed) {
+void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int sortieY, loot** LootsMatrix, int seed, float coef_argent, float coef_ennemi) {
 
     AfficheTouche();
 
@@ -40,6 +40,9 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
     int PFC_jeu = 0;
     int ennemis_tues = 0;
 
+    float bonus_argent = coef_argent;
+    int nb_bonus = 1;
+
     // Initialisation d'une valeur de sauvegarde
 
     string type_temp = "none";
@@ -49,7 +52,9 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
         termkit::clear();
         
         cout << "\n     Votre vie : " << joueur_value << " \033[91m♥\033[0m" << endl;
-        cout << "     Votre argent : " << joueur_coins << " 💰" << endl;
+        cout << "     Votre argent : " << joueur_coins << " 💰 [E]" << endl;
+        cout << "     Pass PlusCourtChemin : " << (dijkstra_pass ? "Acheté [A]." : "Non-acheté.") << endl;
+        cout << "     Coefficient de l'argent : " << "×" << bonus_argent << endl;
 
         cout << "\n     Affichage du donjon :\n" << endl;
         AfficheDonjon(matrice_adjacence, taille, sortieX, sortieY, LootsMatrix);
@@ -60,12 +65,18 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
             type_temp = "none"; // Efface la case
             value_temp = 0;
             instakill = false;
+            joueur_coins += rand() % 6;
         }
         else if (type_temp == "Ennemi" && instakill == false) {
-            PFC_jeu = PFC(value_temp);
+            PFC_jeu = PFC(value_temp*coef_ennemi);
 
             joueur_value -= PFC_jeu;
             ennemis_tues++;
+
+            if (PFC_jeu == 0) {
+                joueur_coins += rand() % 6;
+                joueur_value += rand() % 6;
+            }
 
             type_temp = "none"; // Efface la case
             value_temp = 0;
@@ -77,7 +88,7 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
             value_temp = 0;
         }
         else if (type_temp == "Tresor") {
-            joueur_coins += value_temp;
+            joueur_coins += value_temp*(bonus_argent);
 
             type_temp = "none"; // Efface la case
             value_temp = 0;
@@ -86,7 +97,6 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
         // Detection des touches
 
         key_pressed = termkit::getch();
-        cout<<key_pressed<<endl;
 
         // Touche séléctionnée
 
@@ -104,7 +114,7 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
         else if (key_pressed == 'e') {
             cout << "\b \b";
 
-            choix_shop = Shop(joueur_coins, dijkstra_pass);
+            choix_shop = Shop(joueur_coins, dijkstra_pass, nb_bonus);
             
             if (choix_shop == 1) {
                 dijkstra_pass = true;
@@ -134,6 +144,12 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
                 LootsMatrix[joueur_y][joueur_x].value = joueur_value;
 
                 joueur_coins -= 5;
+            }
+            else if (choix_shop == 5) {
+                bonus_argent = bonus_argent*2;
+
+                joueur_coins -= 10*nb_bonus;
+                nb_bonus ++;
             }
         }
         else if (key_pressed == 'z') {
