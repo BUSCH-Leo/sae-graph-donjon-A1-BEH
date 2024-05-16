@@ -82,7 +82,7 @@ int main() {
 
             // Placement des loots
 
-            cout << "\n     5. Placement des loots aléatoirement (par défaut 15 %)." << endl;
+            cout << "\n     5. Placement des loots aléatoirement (par défaut 20 %)." << endl;
             loot** LootsMatrix = PlaceLoot(matrice_adjacence, taille, prct_proba);
 
             // Préparation du prochain écran
@@ -95,7 +95,7 @@ int main() {
 
             // Lancement du jeu
 
-            Jeu(matrice_adjacence, taille, sortix, sorty, LootsMatrix);
+            Jeu(matrice_adjacence, taille, sortix, sorty, LootsMatrix, seed_convert);
         }
         else if (config_d == 'N' || config_d == 'n') {
 
@@ -126,12 +126,12 @@ int main() {
 
             // Choix de la taille du labyrinthe
 
-            cout << "\n     2. Entrez la taille du labyrinthe (conseillé en dessous de 50) : ";
+            cout << "\n     2. Entrez la taille du labyrinthe (conseillé en dessous de 25) : ";
             cin >> taille;
 
             while (taille <= 1 || taille > 160) {
                 cout << "\n     [!] Veuillez rentrer une valeur entre 2 et 160." << endl;
-                cout << "\n     Entrez la taille du labyrinthe (conseillé en dessous de 50) : ";
+                cout << "\n     Entrez la taille du labyrinthe (conseillé en dessous de 25) : ";
                 cin >> taille;
             }
 
@@ -181,7 +181,7 @@ int main() {
 
             // Placement des loots
 
-            cout << "\n     5. Veuillez envoyer le pourcentage d'apparition des loots (conseillé 15 %)\n     Votre choix : ";
+            cout << "\n     5. Veuillez envoyer le pourcentage d'apparition des loots (conseillé 20 %)\n     Votre choix : ";
             cin >> prct_proba;
 
             while (prct_proba<0 && prct_proba>100) {
@@ -202,7 +202,7 @@ int main() {
 
             // Lancement du jeu
 
-            Jeu(matrice_adjacence, taille, sortix, sorty, LootsMatrix);
+            Jeu(matrice_adjacence, taille, sortix, sorty, LootsMatrix, seed_convert);
         }
         else {
             cout << "\n     [!] Le choix est incorrect, veuillez réessayer." << endl;
