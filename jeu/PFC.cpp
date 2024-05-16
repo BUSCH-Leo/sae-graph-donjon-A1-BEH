@@ -41,6 +41,8 @@ int PFC(int degats) {
         else if (jeu_ennemi == 1) jeu_ennemi_char = 'F';
         else if (jeu_ennemi == 2) jeu_ennemi_char = 'C';
 
+        choix = toupper(choix);
+
         // Détermination du gagnant
 
         if (jeu_ennemi_char == choix) {
