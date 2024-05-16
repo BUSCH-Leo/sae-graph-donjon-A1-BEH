@@ -28,9 +28,8 @@ int main() {
     char config_d = ' ';
     bool ChoixConfig = false;
 
-    string seed = "";
-    int seed_convert = 0;
-    char choix_seed;
+    string input;
+    unsigned int seed_convert;
 
     int taille = 0;
     
@@ -103,15 +102,27 @@ int main() {
             // Choix de la seed
 
             cout << "\n     1. Entrez la seed : ";
-            cin >> seed;
+            cin >> input;
 
-            for (char c : seed) {
-                int asciiValue = static_cast<int>(c);
-                seed_convert = seed_convert * 10 + asciiValue;
+            bool isNumber = true;
+            for (char c : input) {
+                if (!isdigit(c)) {
+                    isNumber = false;
+                    break;
+                }
+            }
+
+            if (isNumber) {
+                seed_convert = stoi(input);
+            } else {
+                for (char c : input) {
+                    int asciiValue = static_cast<int>(c);
+                    seed_convert = seed_convert * 10 + asciiValue;
+                }
             }
 
             srand(seed_convert);
-            cout << "     La seed choisi est : " << seed << "\n     Ou " << seed_convert << " en Ascii." << endl;
+            cout << "     La seed choisie est : " << input << "\n     Ou " << seed_convert << " en " << (isNumber ? "entier." : "ASCII.") << endl;
 
             // Choix de la taille du labyrinthe
 
