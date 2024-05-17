@@ -15,6 +15,24 @@ struct loot {
 	}
 };
 
+loot** copyLootMatrix(loot** original, int taille) {
+    loot** copy = new loot*[taille];
+    for (int i = 0; i < taille; ++i) {
+        copy[i] = new loot[taille];
+        for (int j = 0; j < taille; ++j) {
+            copy[i][j] = original[i][j];
+        }
+    }
+    return copy;
+}
+
+void freeLootMatrix(loot** matrix, int taille) {
+    for (int i = 0; i < taille; ++i) {
+        delete[] matrix[i];
+    }
+    delete[] matrix;
+}
+
 int voisinrandom(vector<vector<bool>>& matrice_adjacence, vector<bool>& visite, int cellule, int taille) {
     vector<int> cellules;
     cellules.clear();
