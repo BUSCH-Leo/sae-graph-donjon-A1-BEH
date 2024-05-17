@@ -43,6 +43,8 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
     float bonus_argent = coef_argent;
     int nb_bonus = 1;
 
+    loot** LootsMatrixCopy = copyLootMatrix(LootsMatrix, taille);
+
     // Initialisation d'une valeur de sauvegarde
 
     string type_temp = "none";
@@ -105,7 +107,7 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
             termkit::clear();
             
             cout << "\n     [Aide] Le plus court chemin possible est le suivant :" << endl;
-            vector<pair<int, int>> cheminParfait = Dijkstra(matrice_adjacence, taille, joueur_y, joueur_x, sortieX, sortieY);
+            vector<pair<int, int>> cheminParfait = Dijkstra(matrice_adjacence, taille, joueur_y, joueur_x, sortieX, sortieY, LootsMatrix);
             AfficheDijkstra(matrice_adjacence, taille, cheminParfait, sortieX, sortieY, LootsMatrix);
 
             cout << endl;
@@ -247,7 +249,12 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
     cout << "     Ennemis tués : " << ennemis_tues << " ඞ" << endl;
     
     cout << "\n     Le plus court chemin possible était le suivant :" << endl;
-    vector<pair<int, int>> cheminParfait = Dijkstra(matrice_adjacence, taille, 0, 0, sortieX, sortieY);
-    AfficheDijkstra(matrice_adjacence, taille, cheminParfait, sortieX, sortieY, LootsMatrix);
+    vector<pair<int, int>> cheminParfait = Dijkstra(matrice_adjacence, taille, 0, 0, sortieX, sortieY, LootsMatrixCopy);
+    AfficheDijkstra(matrice_adjacence, taille, cheminParfait, sortieX, sortieY, LootsMatrixCopy);
     cout << "\n     La seed était : " << seed << "\n" << endl;
+
+    // Suppression des matrices
+
+    freeLootMatrix(LootsMatrixCopy, taille);
+    freeLootMatrix(LootsMatrix, taille);
 }
