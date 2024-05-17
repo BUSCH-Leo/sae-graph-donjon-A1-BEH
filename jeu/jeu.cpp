@@ -151,7 +151,7 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
                 bonus_argent = bonus_argent*2;
 
                 joueur_coins -= 10*nb_bonus;
-                nb_bonus ++;
+                nb_bonus = nb_bonus*2;
             }
         }
         else if (key_pressed == 'z') {
