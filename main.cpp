@@ -43,6 +43,9 @@ int main() {
     float coef_argent = 1;
     float coef_ennemi = 1;
 
+    char visibilite = ' ';
+    int randvisi = -1;
+
     // Affichage ARX
 
     cout<<"\n     █████████   ███████████   █████ █████\n    ███░░░░░███ ░░███░░░░░███ ░░███ ░░███ \n   ░███    ░███  ░███    ░███  ░░███ ███  \n   ░███████████  ░██████████    ░░█████   \n   ░███░░░░░███  ░███░░░░░███    ███░███  \n   ░███    ░███  ░███    ░███   ███ ░░███ \n   █████   █████ █████   █████ █████ █████\n  ░░░░░   ░░░░░ ░░░░░   ░░░░░ ░░░░░ ░░░░░ \n"<<endl;
@@ -69,32 +72,43 @@ int main() {
 
             cout << "\n     2. La taille aléatoirement choisi est : " << taille << endl;
 
+            // Visibilite
+
+            randvisi = rand() % 4;
+
+            if (randvisi == 0) {
+                cout << "\n     3. Le labyrinthe sera : Non visible" << endl;
+            }
+            else {
+                cout << "\n     3. Le labyrinthe sera : Visible" << endl;
+            }
+
             // Choix de la sortie aléatoire
 
             sortix = rand() % taille;
             sorty = rand() % taille;
             
-            cout << "\n     3. La sortie se situera en :\n     X = " << sortix << "\n     Y = " << sorty << endl;
+            cout << "\n     4. La sortie se situera en :\n     X = " << sortix << "\n     Y = " << sorty << endl;
 
             // Création d'un labyrinthe imparfait avec 10% de murs retirés
 
-            cout << "\n     4. Le labyrinthe est défini comme 'Imparfait' avec 10% de murs retirés." << endl;
+            cout << "\n     5. Le labyrinthe est défini comme 'Imparfait' avec 10% de murs retirés." << endl;
             vector<vector<bool>> matrice_adjacence(taille * taille, vector<bool>(taille * taille, false));
             LabyrintheImparfait(matrice_adjacence, taille, entreX, entreY, prct_imparfait);
 
             // Placement des loots
 
-            cout << "\n     5. Placement des loots aléatoirement (par défaut 20 %)." << endl;
+            cout << "\n     6. Placement des loots aléatoirement (par défaut 20 %)." << endl;
 
             loot** LootsMatrix = PlaceLoot(matrice_adjacence, taille, prct_proba);
 
             // Coefficient de l'argent
 
-            cout << "\n     6. Valeur de l'argent fixée à ×1" << endl;
+            cout << "\n     7. Valeur de l'argent fixée à ×1" << endl;
 
             // Coefficient des ennemis
 
-            cout << "\n     7. Valeur des ennemis fixée à ×1" << endl;
+            cout << "\n     8. Valeur des ennemis fixée à ×1" << endl;
 
             // Préparation du prochain écran
 
@@ -106,7 +120,12 @@ int main() {
 
             // Lancement du jeu
 
-            Jeu(matrice_adjacence, taille, sortix, sorty, LootsMatrix, seed_convert, coef_argent, coef_ennemi);
+            if (randvisi == 0) {
+                Jeu(matrice_adjacence, taille, sortix, sorty, LootsMatrix, seed_convert, coef_argent, coef_ennemi, false);
+            }
+            else {
+                Jeu(matrice_adjacence, taille, sortix, sorty, LootsMatrix, seed_convert, coef_argent, coef_ennemi, true);
+            }
         }
         else if (config_d == 'N' || config_d == 'n') {
 
@@ -146,16 +165,27 @@ int main() {
                 cin >> taille;
             }
 
+            // Visibilité
+
+            cout << "\n     3. Voulez vous un labyrinthe entièrement visible, ou à explorer (visible : o, non visible : n) : ";
+            cin >> visibilite;
+
+            while (visibilite != 'o' && visibilite != 'O' && visibilite != 'n' && visibilite != 'N') {
+                cout << "\n     [!] Veuillez entrer soit 'o', soit 'n'." << endl;
+                cout << "\n     Votre choix : ";
+                cin >> visibilite;
+            }
+
             // Choix de la sortie aléatoire
 
             sortix = rand() % taille;
             sorty = rand() % taille;
             
-            cout << "\n     3. La sortie se situera en :\n     X = " << sortix << "\n     Y = " << sorty << endl;
+            cout << "\n     4. La sortie se situera en :\n     X = " << sortix << "\n     Y = " << sorty << endl;
 
             // Création d'un labyrinthe choisi
 
-            cout << "\n     4. Veuillez choisir le type de labyrinthe selon la liste suivante :" << endl;
+            cout << "\n     5. Veuillez choisir le type de labyrinthe selon la liste suivante :" << endl;
             cout << "     1 - Labyrinthe Parfait (un seul chemin possible)" << endl;
             cout << "     2 - Labyrinthe Imparfait (plusieurs chemins possibles)" << endl;
             cout << "     3 - Labyrinthe 'Plus Que Parfait' (utilisation du labyrinthe parfait 2×)" << endl;
@@ -192,7 +222,7 @@ int main() {
 
             // Placement des loots
 
-            cout << "\n     5. Veuillez envoyer le pourcentage d'apparition des loots (conseillé 20 %)\n     Votre choix : ";
+            cout << "\n     6. Veuillez envoyer le pourcentage d'apparition des loots (conseillé 20 %)\n     Votre choix : ";
             cin >> prct_proba;
 
             while (prct_proba<0 && prct_proba>100) {
@@ -205,7 +235,7 @@ int main() {
 
             // Coefficient de l'argent
 
-            cout << "\n     6. Par combien voulez-vous multiplier la valeur des sacs d'argent ? (défaut ×1)\n     Votre choix : ";
+            cout << "\n     7. Par combien voulez-vous multiplier la valeur des sacs d'argent ? (défaut ×1)\n     Votre choix : ";
             cin >> coef_argent;
 
             while (coef_argent<0) {
@@ -216,7 +246,7 @@ int main() {
 
             // Coefficient des ennemis
 
-            cout << "\n     7. Par combien voulez-vous multiplier les degats d'ennemis ? (défaut ×1)\n     Votre choix : ";
+            cout << "\n     8. Par combien voulez-vous multiplier les degats d'ennemis ? (défaut ×1)\n     Votre choix : ";
             cin >> coef_ennemi;
 
             while (coef_ennemi<0) {
@@ -235,7 +265,13 @@ int main() {
 
             // Lancement du jeu
 
-            Jeu(matrice_adjacence, taille, sortix, sorty, LootsMatrix, seed_convert, coef_argent, coef_ennemi);
+            if (visibilite == 'o' || visibilite == 'O') {
+                Jeu(matrice_adjacence, taille, sortix, sorty, LootsMatrix, seed_convert, coef_argent, coef_ennemi, true);
+            }
+            else {
+                Jeu(matrice_adjacence, taille, sortix, sorty, LootsMatrix, seed_convert, coef_argent, coef_ennemi, false);
+            }
+            
         }
         else {
             cout << "\n     [!] Le choix est incorrect, veuillez réessayer." << endl;
