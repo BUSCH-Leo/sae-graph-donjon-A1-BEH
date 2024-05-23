@@ -2,7 +2,7 @@
 
 using namespace std;
 
-int Shop(int joueur_coins, bool pass_paye, int nb_bonus) {
+int Shop(int joueur_coins, bool pass_paye, int nb_bonus, bool visibilite) {
     int choix = 0;
 
     termkit::clear();
@@ -10,7 +10,7 @@ int Shop(int joueur_coins, bool pass_paye, int nb_bonus) {
     cout << "\n     Bienvenue dans le magasin ! Voici votre argent : " << joueur_coins << " 💰" << endl;
 
     cout << "\n     Voici les articles possible :" << endl;
-    cout << "     - Pass PlusCourtChemin (20 💰)     -> Choix 1" << endl;
+    cout << "     - Pass PlusCourtChemin (" << (visibilite ? "20" : "40") << " 💰)     -> Choix 1" << endl;
     cout << "     - InstaKill sur 1 ennemi (5 💰)    -> Choix 2" << endl;
     cout << "     - Potion de vie +5 ♥ (10 💰)       -> Choix 3" << endl;
     cout << "     - Téléportation aléatoire (5 💰)   -> Choix 4" << endl;
@@ -21,7 +21,8 @@ int Shop(int joueur_coins, bool pass_paye, int nb_bonus) {
     cin >> choix;
 
     while (choix < 0 || choix > 5
-    || (choix == 1 && joueur_coins - 20 < 0)
+    || (choix == 1 && joueur_coins - 20 < 0 && visibilite == true)
+    || (choix == 1 && joueur_coins - 40 < 0 && visibilite == false)
     || (choix == 2 && joueur_coins - 5 < 0)
     || (choix == 3 && joueur_coins - 10 < 0)
     || (choix == 4 && joueur_coins - 5 < 0)
