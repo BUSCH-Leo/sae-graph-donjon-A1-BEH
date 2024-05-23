@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int sortieY, loot** LootsMatrix, int seed, float coef_argent, float coef_ennemi) {
+void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int sortieY, loot** LootsMatrix, int seed, float coef_argent, float coef_ennemi, bool visibilite) {
 
     AfficheTouche();
 
@@ -65,8 +65,13 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
         cout << "     Coefficient de l'argent : " << "×" << bonus_argent << endl;
 
         cout << "\n     Affichage du donjon :\n" << endl;
-        //AfficheDonjon(matrice_adjacence, taille, sortieX, sortieY, LootsMatrix);
-        AfficheDonjonVisible(matrice_adjacence, taille, sortieX, sortieY, LootsMatrix,joueur_x,joueur_y,visibleMatrix);
+
+        if (visibilite == true) {
+            AfficheDonjon(matrice_adjacence, taille, sortieX, sortieY, LootsMatrix);
+        }
+        else {
+            AfficheDonjonVisible(matrice_adjacence, taille, sortieX, sortieY, LootsMatrix,joueur_x,joueur_y,visibleMatrix);
+        }
 
         // Si nous rencontrons un ennemi ou une potion de soin
 
@@ -107,9 +112,6 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
 
         key_pressed = termkit::getch();
 
-        /*while (key_pressed != 'a' && key_pressed != 'z' && key_pressed != 'e' && key_pressed != 'q' && key_pressed != 's' && key_pressed != 'd')
-            key_pressed = termkit::getch();*/
-
         // Touche séléctionnée
 
         if (key_pressed == 'a' && dijkstra_pass == true) {
@@ -117,7 +119,7 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
             termkit::clear();
             
             cout << "\n     [Aide] Le plus court chemin possible est le suivant :" << endl;
-            vector<pair<int, int>> cheminParfait = Dijkstra(matrice_adjacence, taille, joueur_y, joueur_x, sortieX, sortieY);
+            vector<pair<int, int>> cheminParfait = Dijkstra(matrice_adjacence, taille, joueur_y, joueur_x, sortieX, sortieY, LootsMatrix);
             AfficheDijkstra(matrice_adjacence, taille, cheminParfait, sortieX, sortieY, LootsMatrix);
 
             cout << endl;
@@ -126,11 +128,16 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
         else if (key_pressed == 'e') {
             cout << "\b \b";
 
-            choix_shop = Shop(joueur_coins, dijkstra_pass, nb_bonus);
+            choix_shop = Shop(joueur_coins, dijkstra_pass, nb_bonus, visibilite);
             
             if (choix_shop == 1) {
                 dijkstra_pass = true;
-                joueur_coins -= 20;
+                if (visibilite == true) {
+                    joueur_coins -= 20;
+                }
+                else {
+                    joueur_coins -= 40;
+                }
             }
             else if (choix_shop == 2) {
                 instakill = true;
@@ -259,7 +266,7 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
     cout << "     Ennemis tués : " << ennemis_tues << " ඞ" << endl;
     
     cout << "\n     Le plus court chemin possible était le suivant :" << endl;
-    vector<pair<int, int>> cheminParfait = Dijkstra(matrice_adjacence, taille, 0, 0, sortieX, sortieY);
+    vector<pair<int, int>> cheminParfait = Dijkstra(matrice_adjacence, taille, 0, 0, sortieX, sortieY, LootsMatrix);
     AfficheDijkstra(matrice_adjacence, taille, cheminParfait, sortieX, sortieY, LootsMatrix);
     cout << "\n     La seed était : " << seed << "\n" << endl;
 }
