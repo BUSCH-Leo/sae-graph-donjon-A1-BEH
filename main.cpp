@@ -108,7 +108,13 @@ int main() {
 
             // Coefficient des ennemis
 
-            cout << "\n     8. Valeur des ennemis fixée à ×1" << endl;
+            if (randvisi == 0) {
+                cout << "\n     8. Valeur des ennemis fixée à ×0.5" << endl;
+                coef_ennemi = 0.5;
+            }
+            else {
+                cout << "\n     8. Valeur des ennemis fixée à ×1" << endl;
+            }
 
             // Préparation du prochain écran
 
