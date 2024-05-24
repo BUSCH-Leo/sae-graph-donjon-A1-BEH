@@ -55,9 +55,9 @@ int PFC(int degats) {
         || (jeu_ennemi_char == 'F' && (choix == 'P' || choix == 'p'))
         || (jeu_ennemi_char == 'C' && (choix == 'F' || choix == 'f'))) {
             cout << "\n     Vous avez perdu face a l'ennemi ! Vous perdez " << degats/2 << " points de vie" << endl;
-            cout << "     Recommencez !" << endl;
-            degats_total += degats/2;
-            Attente(3);
+            cout << "     Recommencez ! (Appuyez sur n'importe quelle touche...)" << endl;
+            degats_total += degats;
+            termkit::getch();
         }
         else {
             cout << "\n     Vous avez gagné face a l'ennemi !" << endl;
