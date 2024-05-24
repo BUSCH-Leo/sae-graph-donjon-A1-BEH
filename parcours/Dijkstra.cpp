@@ -11,11 +11,10 @@ struct Node {
 
     Node(int _x, int _y, int _distance, int _enemies) : x(_x), y(_y), distance(_distance), enemies(_enemies) {}
 
-    // Surcharge de l'opérateur < pour utiliser dans la file de priorité
     bool operator<(const Node& other) const {
         if (enemies == other.enemies)
-            return distance > other.distance; // Priorité à la distance si le nombre d'ennemis est égal
-        return enemies > other.enemies; // Priorité au nombre d'ennemis
+            return distance > other.distance;
+        return enemies > other.enemies;
     }
 };
 
@@ -25,23 +24,16 @@ bool isValid(int x, int y, int taille) {
 }
 
 vector<pair<int, int>> Dijkstra(vector<vector<bool>>& matrice_adjacence, int taille, int departX, int departY, int arriveeX, int arriveeY, loot** LootsMatrix) {
-    // Tableau pour stocker les distances minimales
     vector<vector<int>> distance(taille, vector<int>(taille, INT_MAX));
-    // Tableau pour stocker le nombre d'ennemis minimaux
     vector<vector<int>> enemies(taille, vector<int>(taille, INT_MAX));
-    // File de priorité pour choisir le nœud avec la distance minimale
     priority_queue<Node> pq;
 
-    // Distance et ennemis du départ à lui-même est 0
     distance[departX][departY] = 0;
     enemies[departX][departY] = 0;
-    // Ajouter le départ à la file de priorité
     pq.push(Node(departX, departY, 0, 0));
 
-    // Tableau pour stocker les coordonnées précédentes pour reconstruire le chemin
     vector<vector<pair<int, int>>> previous(taille, vector<pair<int, int>>(taille, {-1, -1}));
 
-    // Déplacements possibles dans toutes les directions (haut, bas, gauche, droite)
     int dx[] = {-1, 1, 0, 0};
     int dy[] = {0, 0, -1, 1};
 
@@ -67,7 +59,6 @@ vector<pair<int, int>> Dijkstra(vector<vector<bool>>& matrice_adjacence, int tai
         }
     }
 
-    // Reconstruire le chemin à partir des coordonnées précédentes
     vector<pair<int, int>> chemin;
     int x = arriveeX, y = arriveeY;
     while (x != -1 && y != -1 && x < taille && y < taille) {
@@ -78,10 +69,8 @@ vector<pair<int, int>> Dijkstra(vector<vector<bool>>& matrice_adjacence, int tai
         y = tempY;
     }
 
-    // Afficher la distance minimale et le nombre d'ennemis entre le départ et l'arrivée
     cout << "\n     - Distance minimale : " << distance[arriveeX][arriveeY] << endl;
-    cout << "     - Nombre d'ennemis rencontrés : " << enemies[arriveeX][arriveeY] << "\n" << endl;
+    cout << "     - Nombre d'ennemis rencontrés minimal : " << enemies[arriveeX][arriveeY] << "\n" << endl;
 
-    // Retourner le chemin parcouru
     return chemin;
 }
