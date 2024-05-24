@@ -84,7 +84,8 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
             type_temp = "none"; // Efface la case
             value_temp = 0;
             instakill = false;
-            joueur_coins += rand() % 6;
+            joueur_coins += rand() % 11;
+            joueur_value += rand() % 6;
         }
         else if (type_temp == "Ennemi" && instakill == false) {
             PFC_jeu = PFC(value_temp*coef_ennemi);
@@ -96,6 +97,8 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
                 joueur_coins += rand() % 6;
                 joueur_value += rand() % 6;
             }
+
+            joueur_coins += rand() % 6;
 
             type_temp = "none"; // Efface la case
             value_temp = 0;
@@ -128,7 +131,8 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
             AfficheDijkstra(matrice_adjacence, taille, cheminDijkstra, sortieX, sortieY, LootsMatrix, false, chemin);
 
             cout << endl;
-            Attente(3);
+            cout << "\n     Appuyez sur une touche pour reprendre le jeu..." << endl;
+            termkit::getch();
         }
         else if (key_pressed == 'e') {
             cout << "\b \b";
