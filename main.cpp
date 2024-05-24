@@ -118,8 +118,8 @@ int main() {
 
             // Préparation du prochain écran
 
-            cout<<endl;
-            Attente(3);
+            cout << "\n     Appuyez sur une touche pour continuer..." << endl;
+            termkit::getch();
 
             termkit::clear();
             ChoixConfig = true;
@@ -263,8 +263,8 @@ int main() {
 
             // Préparation du prochain écran
 
-            cout<<endl;
-            Attente(3);
+            cout << "\n     Appuyez sur une touche pour continuer..." << endl;
+            termkit::getch();
 
             termkit::clear();
             ChoixConfig = true;
