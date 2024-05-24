@@ -25,6 +25,8 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
     LootsMatrix[0][0].type = "Joueur";
     LootsMatrix[0][0].value = 50;
 
+    loot** CopyMatrix = copyLootMatrix(LootsMatrix, taille);
+
     int joueur_value = 50;
     int joueur_coins = 0;
     int joueur_x = 0;
@@ -51,6 +53,8 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
         }
     }
 
+    vector<pair<int, int>> chemin;
+
     // Initialisation d'une valeur de sauvegarde
 
     string type_temp = "none";
@@ -58,6 +62,7 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
 
     while (fin_jeu == false) {
         termkit::clear();
+        chemin.push_back({joueur_x, joueur_y});
         
         cout << "\n     Votre vie : " << joueur_value << " \033[91m♥\033[0m" << endl;
         cout << "     Votre argent : " << joueur_coins << " 💰 [E]" << endl;
@@ -119,8 +124,8 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
             termkit::clear();
             
             cout << "\n     [Aide] Le plus court chemin possible est le suivant :" << endl;
-            vector<pair<int, int>> cheminParfait = Dijkstra(matrice_adjacence, taille, joueur_y, joueur_x, sortieX, sortieY, LootsMatrix);
-            AfficheDijkstra(matrice_adjacence, taille, cheminParfait, sortieX, sortieY, LootsMatrix);
+            vector<pair<int, int>> cheminDijkstra = Dijkstra(matrice_adjacence, taille, joueur_y, joueur_x, sortieX, sortieY, LootsMatrix);
+            AfficheDijkstra(matrice_adjacence, taille, cheminDijkstra, sortieX, sortieY, LootsMatrix, false, chemin);
 
             cout << endl;
             Attente(3);
@@ -265,8 +270,18 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
     cout << "     Votre argent : " << joueur_coins << " 💰" << endl;
     cout << "     Ennemis tués : " << ennemis_tues << " ඞ" << endl;
     
-    cout << "\n     Le plus court chemin possible était le suivant :" << endl;
-    vector<pair<int, int>> cheminParfait = Dijkstra(matrice_adjacence, taille, 0, 0, sortieX, sortieY, LootsMatrix);
-    AfficheDijkstra(matrice_adjacence, taille, cheminParfait, sortieX, sortieY, LootsMatrix);
+    cout << "\n     Labyrinthe complet :" << endl;
+    chemin.push_back({sortieY, sortieX});
+    vector<pair<int, int>> cheminDijkstra = Dijkstra(matrice_adjacence, taille, 0, 0, sortieX, sortieY, CopyMatrix);
+    AfficheDijkstra(matrice_adjacence, taille, cheminDijkstra, sortieX, sortieY, CopyMatrix, true, chemin);
+
+    cout << "\n     Votre chemin : \033[31m▒▒\033[0m" << endl;
+    cout << "     Plus court chemin : \033[34m▒▒\033[0m" << endl;
+
     cout << "\n     La seed était : " << seed << "\n" << endl;
+
+    // Libérer la mémoire
+
+    freeLootMatrix(LootsMatrix, taille);
+    freeLootMatrix(CopyMatrix, taille);
 }
