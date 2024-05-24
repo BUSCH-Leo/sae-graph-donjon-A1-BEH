@@ -8,7 +8,7 @@ using namespace std;
 struct loot {
 	string type;
 	int value;
-    int alt_value;
+	int alt_value;
 	loot () {
 		type = "none";
 		value = 0;
