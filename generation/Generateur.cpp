@@ -128,15 +128,15 @@ loot** PlaceLoot(vector<vector<bool>>& matrice_adjacence, int taille, int proba)
 		for (int j = 0; j < taille; ++j) {
 			int randType = rand() % 100;
 			int randValue = (rand() % 8)+1;	// Valeur à changer au besoin
-			if (randType <= proba*7/10) { // 70%
+			if (randType <= proba*50/100) { // 50%
 				LootsMatrix[i][j].type = "Ennemi";
 				LootsMatrix[i][j].value = randValue*2; // Degats entre 2 et 20
 			}
-			else if (randType > proba*7/10 && randType <= (proba*7/10+proba*1/10)) { // 10 %
+			else if (randType > proba*50/100 && randType <= (proba*50/100+proba*25/100)) { // 25 %
 				LootsMatrix[i][j].type = "Soin";
 				LootsMatrix[i][j].value = randValue;
 			}
-			else if (randType > (proba*8/10) && randType <= proba) { // 20 %
+			else if (randType > (proba*75/100) && randType <= proba) { // 25 %
 				LootsMatrix[i][j].type = "Tresor";
 				LootsMatrix[i][j].value = randValue;
 			}
