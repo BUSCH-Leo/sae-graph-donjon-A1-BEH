@@ -283,6 +283,9 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
     cout << "     Plus court chemin : \033[34m▒▒\033[0m" << endl;
 
     cout << "\n     La seed était : " << seed << "\n" << endl;
+    
+    cout << "\n     Appuyez sur une touche pour quitter..." << endl;
+    termkit::getch();
 
     // Libérer la mémoire
 
