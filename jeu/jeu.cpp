@@ -32,6 +32,8 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
     int joueur_x = 0;
     int joueur_y = 0;
 
+    int int_temp = 0;
+
     bool dijkstra_pass = false;
     int choix_shop = 0;
     bool instakill = false;
@@ -43,7 +45,7 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
     int ennemis_tues = 0;
 
     float bonus_argent = coef_argent;
-    int nb_bonus = 1;
+    float nb_bonus = 1;
 
     bool** visibleMatrix = new bool* [taille];
     for (int i = 0; i < taille; ++i) {
@@ -84,7 +86,9 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
             type_temp = "none"; // Efface la case
             value_temp = 0;
             instakill = false;
-            joueur_coins += rand() % 11;
+            ennemis_tues++;
+
+            joueur_coins += (rand() % 6)*bonus_argent;
             joueur_value += rand() % 6;
         }
         else if (type_temp == "Ennemi" && instakill == false) {
@@ -94,11 +98,11 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
             ennemis_tues++;
 
             if (PFC_jeu == 0) {
-                joueur_coins += rand() % 6;
+                joueur_coins += (rand() % 6)*bonus_argent;
                 joueur_value += rand() % 6;
             }
 
-            joueur_coins += rand() % 6;
+            joueur_coins += (rand() % 6)*bonus_argent;
 
             type_temp = "none"; // Efface la case
             value_temp = 0;
@@ -150,7 +154,7 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
             }
             else if (choix_shop == 2) {
                 instakill = true;
-                joueur_coins -= 5;
+                joueur_coins -= 10;
             }
             else if (choix_shop == 3) {
                 joueur_value += 5;
@@ -176,8 +180,8 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
             else if (choix_shop == 5) {
                 bonus_argent = bonus_argent*2;
 
-                joueur_coins -= 10*nb_bonus;
-                nb_bonus = nb_bonus * 2;
+                joueur_coins -= int(10*nb_bonus);
+                nb_bonus = nb_bonus * 2.3;
             }
         }
         else if (key_pressed == 'z') {
@@ -283,7 +287,7 @@ void Jeu(vector<vector<bool>> matrice_adjacence, int taille, int sortieX, int so
     cout << "     Plus court chemin : \033[34m▒▒\033[0m" << endl;
 
     cout << "\n     La seed était : " << seed << "\n" << endl;
-    
+
     cout << "\n     Appuyez sur une touche pour quitter..." << endl;
     termkit::getch();
 
